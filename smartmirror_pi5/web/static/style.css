@@ -1,0 +1,568 @@
+body {
+    margin: 18px;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    background: #0b0f14;
+    color: #e8eef7;
+}
+
+.top {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.title {
+    font-size: 22px;
+    font-weight: 700;
+    flex: 1;
+}
+
+.badge {
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #1a2432;
+    font-size: 14px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.card {
+    background: #111826;
+    border: 1px solid #1f2a3a;
+    border-radius: 18px;
+    padding: 14px;
+    min-height: 150px;
+}
+
+.card-title {
+    font-size: 14px;
+    opacity: 0.85;
+    margin-bottom: 8px;
+}
+
+.big {
+    font-size: 44px;
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 6px 0;
+}
+
+.mid {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.sub {
+    opacity: 0.85;
+    margin-top: 6px;
+}
+
+.list {
+    margin-top: 10px;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px dashed #213047;
+}
+
+.btn {
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid #2a3b57;
+    background: #172235;
+    color: #e8eef7;
+    font-weight: 700;
+}
+
+.center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 75vh;
+}
+
+.li {
+    margin: 8px 0;
+}
+
+/* 음성 목적지 검색 */
+.voice-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.voice-btn {
+    background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+    font-size: 16px;
+}
+
+.voice-btn:hover {
+    background: linear-gradient(135deg, #2d5a87 0%, #3d7ab7 100%);
+}
+
+.voice-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.dest-input {
+    flex: 1;
+    min-width: 120px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid #2a3b57;
+    background: #172235;
+    color: #e8eef7;
+    font-size: 14px;
+}
+
+.dest-input::placeholder {
+    color: #6b7a8c;
+}
+
+.status-text {
+    margin-top: 10px;
+    font-size: 13px;
+}
+
+.voice-result {
+    margin-top: 12px;
+    padding: 12px;
+    background: #1a2432;
+    border-radius: 12px;
+}
+
+.result-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #4fa3f7;
+}
+
+.result-address {
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.result-info {
+    margin-top: 10px;
+    display: flex;
+    gap: 16px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.result-info span:first-child {
+    color: #f7c94f;
+}
+
+.result-info span:last-child {
+    color: #4ff77a;
+}
+
+/* 검색 컨테이너 & 드롭다운 */
+.search-container {
+    position: relative;
+    flex: 1;
+    min-width: 180px;
+}
+
+.place-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #1a2432;
+    border: 1px solid #2a3b57;
+    border-radius: 12px;
+    margin-top: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.dropdown-item {
+    padding: 10px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #213047;
+    transition: background 0.2s;
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.dropdown-item:hover {
+    background: #243447;
+}
+
+.item-name {
+    font-weight: 600;
+    color: #e8eef7;
+}
+
+.item-address {
+    font-size: 11px;
+    color: #8899aa;
+    margin-top: 2px;
+}
+
+/* 결과 헤더 */
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-clear {
+    background: transparent;
+    border: none;
+    color: #6b7a8c;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px 8px;
+}
+
+.btn-clear:hover {
+    color: #ff6b6b;
+}
+
+/* 통합 택시 카드 */
+#taxi-card {
+    min-height: 180px;
+}
+
+.taxi-destination {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.dest-label {
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+.dest-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #4fa3f7;
+}
+
+.taxi-main {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.taxi-details {
+    display: flex;
+    gap: 12px;
+}
+
+.search-area {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed #213047;
+}
+
+.search-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.search-row .voice-btn {
+    padding: 10px 14px;
+    margin-top: 0;
+    font-size: 18px;
+}
+
+/* 버스 카드 */
+#bus-card {
+    min-height: 200px;
+}
+
+.bus-stop-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.stop-label {
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+.stop-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #4fa3f7;
+}
+
+.bus-main {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.eta-label {
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+/* 버스 도착 정보 */
+.bus-row {
+    flex-wrap: wrap;
+}
+
+.bus-row .left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.bus-no {
+    font-weight: 700;
+    color: #4fa3f7;
+}
+
+.bus-direction {
+    font-size: 11px;
+    color: #8899aa;
+    opacity: 0.9;
+}
+
+.stop-no {
+    font-size: 12px;
+    color: #6b7a8c;
+    font-weight: 400;
+}
+
+/* 날씨 카드 */
+#weather-card {
+    min-height: 150px;
+}
+
+.weather-main {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.weather-desc {
+    font-size: 14px;
+    color: #8899aa;
+    text-transform: capitalize;
+}
+
+.weather-alert {
+    margin: 10px 0;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.weather-alert.rain {
+    background: linear-gradient(135deg, #1a3a5c 0%, #2a5a8c 100%);
+    color: #7ab8ff;
+    border: 1px solid #3a6a9c;
+}
+
+.weather-alert.snow {
+    background: linear-gradient(135deg, #2a3a4c 0%, #4a5a6c 100%);
+    color: #c8d8f8;
+    border: 1px solid #5a6a7c;
+}
+
+.weather-details {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+/* 지하철 카드 */
+#subway-card {
+    min-height: 250px;
+}
+
+.subway-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed #213047;
+}
+
+.subway-header .stop-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #4fa3f7;
+}
+
+.day-type {
+    font-size: 13px;
+    color: #8899aa;
+    background: rgba(136, 153, 170, 0.1);
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+.subway-main {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.subway-tracks {
+    display: flex;
+    gap: 16px;
+    min-height: 120px;
+}
+
+.track-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.track-title {
+    font-size: 13px;
+    color: #8899aa;
+    margin-bottom: 8px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.subway-tracks .list {
+    flex: 1;
+}
+
+/* 도착시간 기준 확률 카드 */
+#commute-prob-card {
+    min-height: 200px;
+}
+
+.prob-input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.prob-input-row label {
+    font-size: 13px;
+    opacity: 0.8;
+    min-width: 70px;
+}
+
+.time-input {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #2a3b57;
+    background: #172235;
+    color: #4fa3f7;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.prob-result {
+    margin-top: 12px;
+    padding: 12px;
+    background: #1a2432;
+    border-radius: 10px;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.prob-summary {
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed #213047;
+    color: #8899aa;
+}
+
+.prob-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+}
+
+.prob-mode {
+    font-weight: 700;
+    min-width: 80px;
+}
+
+.prob-pct {
+    font-size: 18px;
+    font-weight: 800;
+    min-width: 50px;
+}
+
+.prob-item.taxi .prob-pct {
+    color: #f7c94f;
+}
+
+.prob-item.bus .prob-pct {
+    color: #4ade80;
+}
+
+.prob-item.subway .prob-pct {
+    color: #60a5fa;
+}
+
+.prob-mean {
+    font-size: 12px;
+    color: #8899aa;
+}
+
+.prob-note {
+    font-size: 11px;
+    color: #ff6b6b;
+    font-weight: 600;
+    background: rgba(255, 107, 107, 0.15);
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: auto;
+}
+
+/* 날씨 기반 브리핑 */
+.weather-briefing {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px dashed #2a4a6a;
+}
+
+.briefing-point {
+    font-size: 13px;
+    color: #a8d8ff;
+    padding: 6px 10px;
+    margin: 4px 0;
+    background: rgba(100, 180, 255, 0.1);
+    border-radius: 8px;
+    border-left: 3px solid #4a9eff;
+}
