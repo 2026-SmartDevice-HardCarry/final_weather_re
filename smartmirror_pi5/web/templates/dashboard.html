@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <title>Smart Mirror</title>
-  <meta http-equiv="refresh" content="20">
+  <meta http-equiv="refresh" content="60">
   <link rel="stylesheet" href="/static/style.css">
   <script defer src="/static/app.js"></script>
 </head>
@@ -15,37 +15,6 @@
   </div>
 
   <div class="grid">
-
-
-    <!-- 1.5) 도착시간 기반 교통수단 확률 -->
-    <div class="card" id="commute-prob-card">
-      <div class="card-title">🚦 도착시간 기준 확률</div>
-
-      <div class="prob-input-row">
-        <label>도착 시간:</label>
-        <input id="arriveTime" type="time" value="09:00" class="time-input" />
-      </div>
-
-      <div class="prob-input-row">
-        <label>목적지:</label>
-        <div class="search-container" id="destSearchContainer2">
-          <input id="destInput2" class="dest-input" placeholder="목적지 입력(예: 부산역)" oninput="onDestinationInput2()"
-            autocomplete="off" />
-          <div id="placeDropdown2" class="place-dropdown"></div>
-        </div>
-      </div>
-
-      <button class="btn" onclick="calcCommuteProb()">확률 계산</button>
-
-      <div id="probResult" class="prob-result">
-        목적지와 도착 시간을 입력하고 버튼을 눌러주세요.
-      </div>
-
-      <!-- 선택된 목적지 좌표 저장 -->
-      <input type="hidden" id="destLat2" />
-      <input type="hidden" id="destLon2" />
-      <input type="hidden" id="destName2" />
-    </div>
 
     <!-- 2) 날씨 -->
     <div class="card" id="weather-card">
@@ -72,149 +41,6 @@
         <div class="sub">체감 {{ weather.feels_like|round(0) if weather.feels_like is not none else "--" }}°C</div>
         <div class="sub">강수확률 {{ (precip_prob*100)|round(0) }}%</div>
         {% if weather.humidity is not none %}<div class="sub">습도 {{ weather.humidity }}%</div>{% endif %}
-      </div>
-
-      <!-- 날씨 기반 브리핑 -->
-      {% if briefing.action_points %}
-      <div class="weather-briefing">
-        {% for p in briefing.action_points %}
-        <div class="briefing-point">{{ p }}</div>
-        {% endfor %}
-      </div>
-      {% endif %}
-    </div>
-
-    <!-- 3) 버스 + 정류장 검색 (통합) -->
-    <div class="card" id="bus-card">
-      <div class="card-title">🚌 버스 · 정류장</div>
-
-      <!-- 현재 정류장 정보 -->
-      <div id="busInfo">
-        <div class="bus-stop-header">
-          <span class="stop-label">정류장:</span>
-          <span class="stop-name" id="currentStopName">{{ stop.nodeNm if stop else "정류장 없음" }}{% if stop and stop.nodeNo
-            %} (#{{ stop.nodeNo }}){% endif %}</span>
-        </div>
-        {% if stop %}
-        <div class="bus-main">
-          <div class="big" id="currentETA">{{ eta_min if eta_min is not none else "--" }}분</div>
-          <div class="sub eta-label">다음 버스까지</div>
-        </div>
-        <div class="list" id="busArrivals">
-          {% for a in arrivals_preview %}
-          <div class="row bus-row">
-            <div class="left">
-              <span class="bus-no">{{ a.routeNo }}</span>
-              {% if a.endNodeNm %}<span class="bus-direction">→{{ a.endNodeNm }}</span>{% endif %}
-            </div>
-            <div class="right">{{ a.arrTimeMin if a.arrTimeMin is not none else "--" }}분</div>
-          </div>
-          {% endfor %}
-        </div>
-        {% else %}
-        <div class="bus-main">
-          <div class="big" id="currentETA">--</div>
-          <div class="sub">정류장 정보 없음</div>
-        </div>
-        <div class="list" id="busArrivals"></div>
-        {% endif %}
-      </div>
-
-      <!-- 검색 영역 -->
-      <div class="search-area">
-        <div class="search-row">
-          <div class="search-container" id="busSearchContainer">
-            <input type="text" id="busStopInput" placeholder="다른 정류장 검색..." class="dest-input"
-              oninput="onBusStopInput()">
-            <div id="busStopDropdown" class="place-dropdown"></div>
-          </div>
-        </div>
-        <div id="busStatus" class="sub status-text"></div>
-      </div>
-    </div>
-
-    <!-- 4) 지하철 -->
-    <div class="card" id="subway-card">
-      <div class="card-title">🚇 지하철</div>
-
-      <div id="subwayInfo">
-        <!-- 역 정보 & 요일 -->
-        <div class="subway-header">
-          <div class="stop-name" id="currentSubwayStation">역 정보 없음</div>
-          <div class="day-type" id="subwayDayType">평일</div>
-        </div>
-
-        <!-- 메인 ETA 표시 -->
-        <div class="subway-main">
-          <div class="big" id="subwayNextETA">--</div>
-          <div class="sub eta-label">다음 열차까지</div>
-        </div>
-
-        <!-- 상행/하행 시간표 미리보기 -->
-        <div class="subway-tracks">
-          <!-- 상행 (또는 내선) -->
-          <div class="track-col">
-            <div class="track-title">상행/내선</div>
-            <div class="list" id="subwayUpList">
-              <div class="sub">--</div>
-            </div>
-          </div>
-          <!-- 하행 (또는 외선) -->
-          <div class="track-col">
-            <div class="track-title">하행/외선</div>
-            <div class="list" id="subwayDownList">
-              <div class="sub">--</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 검색 영역 -->
-        <div class="search-area" id="subwaySearchContainer">
-          <div class="search-row">
-            <input type="text" id="subwayInput" placeholder="지하철역 검색..." oninput="onSubwayInput()" autocomplete="off">
-          </div>
-          <div id="subwayDropdown" class="dropdown-list"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 4) 택시 + 목적지 검색 (통합) -->
-    <div class="card" id="taxi-card">
-      <div class="card-title">🚕 택시 · 목적지</div>
-
-      <!-- 현재 목적지 정보 -->
-      <div id="taxiInfo">
-        <div class="taxi-destination">
-          <span class="dest-label">목적지:</span>
-          <span class="dest-name" id="currentDestName">{{ dest_name }}</span>
-        </div>
-        {% if taxi.ok %}
-        <div class="taxi-main">
-          <div class="big" id="currentDuration">{{ taxi.duration_min }}분</div>
-          <div class="taxi-details">
-            <div class="sub" id="currentFare">💰 {{ "{:,}".format(taxi.taxi_fare) }}원</div>
-            <div class="sub" id="currentDistance">📍 {{ (taxi.distance_meter / 1000)|round(1) }}km</div>
-          </div>
-        </div>
-        {% else %}
-        <div class="taxi-main">
-          <div class="big" id="currentDuration">--</div>
-          <div class="sub" id="currentFare">{{ taxi.error if taxi.error else "정보 없음" }}</div>
-        </div>
-        {% endif %}
-      </div>
-
-      <!-- 검색 영역 -->
-      <div class="search-area">
-        <div class="search-row">
-          <button class="btn voice-btn" id="voiceBtn" onclick="startVoiceSearch()">🎙️</button>
-          <div class="search-container">
-            <input type="text" id="destInput" placeholder="다른 목적지 검색..." class="dest-input"
-              oninput="onDestinationInput()">
-            <div id="placeDropdown" class="place-dropdown"></div>
-          </div>
-        </div>
-        <div id="voiceStatus" class="sub status-text"></div>
       </div>
     </div>
 

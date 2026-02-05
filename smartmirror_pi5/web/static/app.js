@@ -645,6 +645,30 @@ async function calcCommuteProb() {
       ${renderItem("🚌", "버스", busS, "bus")}
       ${renderItem("🚇", "지하철", subS, "subway")}
     `;
+
+    // ===== Ambient Light Logic =====
+    // 1. 유효한 p_on_time 중 최대값 찾기
+    const validProbs = [];
+    if (probs.taxi && probs.taxi.ok) validProbs.push(probs.taxi.p_on_time);
+    if (probs.bus && probs.bus.ok && !probs.bus.detail?.not_operating) validProbs.push(probs.bus.p_on_time);
+    if (probs.subway && probs.subway.ok && !probs.subway.detail?.not_operating) validProbs.push(probs.subway.p_on_time);
+
+    // 초기화
+    document.body.className = "";
+
+    if (validProbs.length > 0) {
+      const maxP = Math.max(...validProbs);
+      console.log("Max Probability:", maxP);
+
+      if (maxP >= 0.9) {
+        document.body.classList.add("status-good");
+      } else if (maxP >= 0.7) {
+        document.body.classList.add("status-warning");
+      } else {
+        document.body.classList.add("status-critical");
+      }
+    }
+    // ===============================
   } catch (e) {
     resultEl.textContent = `요청 실패: ${e.message}`;
   }
